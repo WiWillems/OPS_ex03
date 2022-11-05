@@ -14,6 +14,7 @@ char **global_argv;
 
 int main(int argc, char *argv[]) {
   global_argv = argv;
+  int niceIncr;
   unsigned long int numOfTimes;
   char printMethod, printChar;
   ErrCode err;
@@ -25,6 +26,8 @@ int main(int argc, char *argv[]) {
     printMethod = argv[1][0];
     numOfTimes = strtoul(argv[2], NULL, 10);  // String to unsigned long
     printChar = argv[3][0];
+    niceIncr = (int) strtoul(argv[3], NULL, 10);
+
     
     PrintCharacters(printMethod, numOfTimes, printChar);  // Print character printChar numOfTimes times using method printMethod
   }
