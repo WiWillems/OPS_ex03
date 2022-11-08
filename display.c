@@ -31,29 +31,42 @@ int main(int argc, char *argv[]) {
     printMethod = argv[1][0];
     numOfTimes = strtoul(argv[2], NULL, 10);  // String to unsigned long
     printChar = argv[3][0];
-    niceIncr = (int) strtoul(argv[3], NULL, 10);
+    //niceIncr = (int) strtoul(argv[3], NULL, 10); nice Incr
+    niceIncr = argc-3;
 
     printf (" PID of initial process : %d\n", ( int) getpid () ) ;
     printf (" PPID of initial process : %d ( the shell I was started from ?)\n",
     (int) getppid () ) ;
 
       int forkRetVal = fork () ;
+      int iChilds = iChild*niceIncr;
 
-     for(iChild=0;iChild <= niceIncr; iChild++){
+     for(iChild=0;iChild < niceIncr; iChild++){
            switch(forkRetVal) {
               case -1:  // ... failed
               perror("Fork failed .\n");
               exit(1);
     
               case 0:  // First child process:
-              printf (" Child : My PID = %d\n", ( int) getpid () ) ;
-              printf (" Child : My parent ’s PID = %d\n", ( int) getppid () ) ;
+              printf (" Child : My PID = %d\n", (int) getpid () ) ;
+              printf (" Child : My parent ’s PID = %d\n", (int) getppid () ) ;
+              printf("Ichild is: %s\n", iChilds);
               break;
 
-              default: //parent
-              printf(" Parent : My PID = %d\n", ( int) getpid () ) ;
-              printf(" Parent : My child ’s PID = %d\n", forkRetVal ) ;
-              break;
+              /*switch(forkRetVal)
+                    case -1:  // ... failed
+                    perror("Fork failed .\n");
+                    xit(1);
+    
+                    case 0:  // First child process:
+                    printf (" Child : My PID = %d\n", ( int) getpid () ) ;
+                    printf (" Child : My parent ’s PID = %d\n", ( int) getppid () ) ;
+                    break;
+
+                    default: //parent
+                    printf(" Parent : My PID = %d\n", ( int) getpid () ) ;
+                    printf(" Parent : My child ’s PID = %d\n", forkRetVal ) ;
+                    break;*/
     
           }
       }
