@@ -17,31 +17,29 @@ char **global_argv;
 int main(int argc, char *argv[]) {
   global_argv = argv;
 
-  int niceIncr;
-  int iChild = 0;
+  unsigned long niceIncr;
+  unsigned long iChild;
 
-  unsigned long int numOfTimes;
-  char printMethod, printChar;
   ErrCode err;
   
   err = SyntaxCheck(argc, argv);  // Check the command-line parameters
-  if(err != NO_ERR) 
+  if(err != NO_ERR) {
     DisplayError(err);        // Print an error message
- 
-    printMethod = argv[1][0];
-    numOfTimes = strtoul(argv[2], NULL, 10);  // String to unsigned long
-    printChar = argv[3][0];
-    //niceIncr = (int) strtoul(argv[3], NULL, 10);
-    niceIncr = (argc-3);
+  }
+  else{
+
+    niceIncr = strtoul(argv[3], NULL, 10);
+    //niceIncr = argc-3;
 
     printf (" PID of initial process : %d\n", ( int) getpid () ) ;
     printf (" PPID of initial process : %d ( the shell I was started from ?)\n",
     (int) getppid () ) ;
 
-      int forkRetVal = fork () ;
-      int iChilds = (iChild*niceIncr);
-
      for(iChild=0;iChild < niceIncr; iChild++){
+
+           int forkRetVal = fork ();
+           unsigned long iChilds = iChild*niceIncr;
+
            switch(forkRetVal) {
               case -1:  // ... failed
               perror("Fork failed .\n");
@@ -50,34 +48,19 @@ int main(int argc, char *argv[]) {
               case 0:  // First child process:
               printf (" Child : My PID = %d\n", (int) getpid () ) ;
               printf (" Child : My parent ’s PID = %d\n", (int) getppid () ) ;
-              printf ("Ichild is: %c\n", iChilds);
+              printf("IChilds is: %ld\n", iChilds);
               break;
 
               default: //parent
               printf(" Parent : My PID = %d\n", ( int) getpid () ) ;
               printf(" Parent : My child ’s PID = %d\n", forkRetVal ) ;
               break;
-
-              /*switch(forkRetVal)
-                    case -1:  // ... failed
-                    perror("Fork failed .\n");
-                    xit(1);
-    
-                    case 0:  // First child process:
-                    printf (" Child : My PID = %d\n", ( int) getpid () ) ;
-                    printf (" Child : My parent ’s PID = %d\n", ( int) getppid () ) ;
-                    break;
-
-                    default: //parent
-                    printf(" Parent : My PID = %d\n", ( int) getpid () ) ;
-                    printf(" Parent : My child ’s PID = %d\n", forkRetVal ) ;
-                    break;*/
     
           }
       }
-  
+  }
   printf("\n");  // Newline at end
-  printf("niceinc: %d\n", niceIncr);
+  printf("niceinc: %ld\n", niceIncr);
   printf("\n");  // Newline at end
 
   return 0;
